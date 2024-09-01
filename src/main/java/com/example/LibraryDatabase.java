@@ -37,6 +37,20 @@ public class LibraryDatabase {
         return "Book borrowed successfully.";
     }
 
+    public String returnBook(String isbn) {
+        if (!books.containsKey(isbn)) {
+            return "Book with ISBN " + isbn + " does not exist in the library.";
+        }
+
+        Boolean isAvailable = bookAvailability.get(isbn);
+        if (isAvailable == null || isAvailable) {
+            return "Book with ISBN " + isbn + " was not borrowed.";
+        }
+
+        bookAvailability.put(isbn, true); // Mark the book as available
+        return "Book returned successfully.";
+    }
+
     public Book getBookByIsbn(String isbn) {
         return books.get(isbn);
     }
