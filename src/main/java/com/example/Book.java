@@ -1,16 +1,20 @@
+// file for store book data 
 package com.example;
+
 class Book {
 
     private String isbn;
     private String title;
     private String author;
     private int publicationYear;
+    private boolean isAvailable;
 
     public Book(String isbn, String title, String author, int publicationYear) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
+        this.isAvailable = true; // New books are available by default
     }
 
     public String getIsbn() {
@@ -26,29 +30,13 @@ class Book {
     }
 
     public int getPublicationYear() {
-        return publicationYear; }
-
-    public void validate() throws InvalidBookException {
-        if (isbn == null || isbn.isEmpty()) {
-            throw new InvalidBookException("ISBN cannot be null or empty.");
-        }
-
-        if (title == null || title.isEmpty()) {
-            throw new InvalidBookException("Title cannot be null or empty.");
-        }
-
-        if (author == null || author.isEmpty()) {
-            throw new InvalidBookException("Author cannot be null or empty.");
-        }
-
-        if (publicationYear <= 0) {
-            throw new InvalidBookException("Publication year must be a positive number.");
-        }
+        return publicationYear;
     }
-}
 
-class InvalidBookException extends Exception {
-    public InvalidBookException(String message) {
-        super(message);
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+    public void setAvailable(boolean available) {
+        this.isAvailable = available;
     }
 }
