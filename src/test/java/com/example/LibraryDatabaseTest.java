@@ -1,11 +1,11 @@
 package com.example;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import java.util.List;
 
 public class LibraryDatabaseTest {
-       public LibraryDatabaseTest(){
-        
-       }
+    public LibraryDatabaseTest(){}
 
     // Test for adding a book with valid details.
     @Test
@@ -114,5 +114,38 @@ public class LibraryDatabaseTest {
         LibraryDatabase database = new LibraryDatabase();
         String result = database.returnBook("0000000000");
         assertEquals("Book with ISBN 0000000000 does not exist in the library.", result);
+    }
+
+    @Test
+    public void viewAvailableBooks_allAvailableBooks_shouldReturnListOfBooks() {
+        LibraryDatabase database = new LibraryDatabase();
+        Book book1 = new Book("1234567890", "maths", "Aryabhata", 2018);
+        Book book2 = new Book("0987654321", "Physics", "Newton", 2020);
+        database.addBook(book1);
+        database.addBook(book2);
+
+        // Both books are available initially
+        List<Book> availableBooks = database.getAvailableBooks();
+
+        assertEquals(2, availableBooks.size());
+        assertTrue(availableBooks.contains(book1));
+        assertTrue(availableBooks.contains(book2));
+    }
+
+    // Test for viewing available books after borrowing one
+    @Test
+    public void viewAvailableBooks_afterBorrowing_shouldReturnListOfAvailableBooks() {
+        LibraryDatabase database = new LibraryDatabase();
+        Book book1 = new Book("1234567890", "maths", "Aryabhata", 2018);
+        Book book2 = new Book("0987654321", "Physics", "Newton", 2020);
+        database.addBook(book1);
+        database.addBook(book2);
+        database.borrowBook("1234567890"); // Borrow book1
+
+        List<Book> availableBooks = database.getAvailableBooks();
+
+        assertEquals(1, availableBooks.size());
+        assertTrue(availableBooks.contains(book2));
+        assertTrue(!availableBooks.contains(book1));
     }
 }
