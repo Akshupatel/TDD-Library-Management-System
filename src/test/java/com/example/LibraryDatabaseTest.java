@@ -58,6 +58,34 @@ public class LibraryDatabaseTest {
         assertEquals("Publication year must be a positive number.", result);
     }
  
+    @Test
+    public void borrowBook_bookAvailable_shouldBorrowSuccessfully() {
+        LibraryDatabase database = new LibraryDatabase();
+        Book book = new Book("7874428560", "Effective Java", "Joshua Bloch", 2018);
+        database.addBook(book);
+        String result = database.borrowBook("7874428560");
+        assertEquals("Book borrowed successfully.", result);
+    }
 
+    @Test
+    public void borrowBook_bookNotAvailable_shouldReturnErrorMessage() {
+        LibraryDatabase database = new LibraryDatabase();
+        Book book = new Book("1234567890", "Effective Java", "Joshua Bloch", 2018);
+        database.addBook(book);
+        database.borrowBook("1234567890"); // First borrow to make it unavailable
+
+        String result = database.borrowBook("1234567890");
+
+        assertEquals("Book with ISBN 1234567890 is currently unavailable.", result);
+    }
+
+    @Test
+    public void borrowBook_bookDoesNotExist_shouldReturnErrorMessage() {
+        LibraryDatabase database = new LibraryDatabase();
+
+        String result = database.borrowBook("0000000000");
+
+        assertEquals("Book with ISBN 0000000000 does not exist in the library.", result);
+    }
   
 }
